@@ -39,11 +39,9 @@ class BlogPostsController < ApplicationController
   def update
     respond_to do |format|
       if @blog_post.update(blog_post_params)
-        format.html { redirect_to blog_post_url(@blog_post), notice: "Blog post was successfully updated." }
-        format.json { render :show, status: :ok, location: @blog_post }
+        format.html { redirect_to blog_posts_path, notice: "Blog post was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @blog_post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,7 +52,6 @@ class BlogPostsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to blog_posts_url, notice: "Blog post was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 
