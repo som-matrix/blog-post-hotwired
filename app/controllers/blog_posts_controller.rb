@@ -25,11 +25,12 @@ class BlogPostsController < ApplicationController
 
     respond_to do |format|
       if @blog_post.save
-        format.html { redirect_to blog_post_url(@blog_post), notice: "Blog post was successfully created." }
-        format.json { render :show, status: :created, location: @blog_post }
+        # when a blog post is created, we prepend blog_post partial to the list of blog posts
+        format.turbo_stream { render turbo_stream: turbo_stream.prepend("blog_posts", 
+                              partial: "blog_post", locals: { blog_post: @blog_post },  
+                            )}
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @blog_post.errors, status: :unprocessable_entity }
       end
     end
   end
