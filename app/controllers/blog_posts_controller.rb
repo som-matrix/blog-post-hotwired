@@ -3,7 +3,7 @@ class BlogPostsController < ApplicationController
 
   # GET /blog_posts or /blog_posts.json
   def index
-    @blog_posts = BlogPost.all
+    @blog_posts = BlogPost.all.order(id: :desc)
   end
 
   # GET /blog_posts/1 or /blog_posts/1.json
@@ -26,8 +26,8 @@ class BlogPostsController < ApplicationController
     respond_to do |format|
       if @blog_post.save
         # when a blog post is created, we prepend blog_post partial to the list of blog posts
-        format.turbo_stream { render turbo_stream: turbo_stream.prepend("blog_posts", 
-                              partial: "blog_post", locals: { blog_post: @blog_post },  
+        format.turbo_stream { render turbo_stream: turbo_stream.prepend("blog_posts",
+                              partial: "blog_post", locals: { blog_post: @blog_post },
                             )}
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class BlogPostsController < ApplicationController
     @blog_post.destroy!
 
     respond_to do |format|
-      format.html { redirect_to blog_posts_url, notice: "Blog post was successfully destroyed." }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@blog_post) }
     end
   end
 
