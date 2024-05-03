@@ -25,10 +25,13 @@ class BlogPostsController < ApplicationController
 
     respond_to do |format|
       if @blog_post.save
-        # when a blog post is created, we prepend blog_post partial to the list of blog posts
-        format.turbo_stream { render turbo_stream: turbo_stream.prepend("blog_posts",
-                              partial: "blog_post", locals: { blog_post: @blog_post },
-                            )}
+          format.turbo_stream do
+              render turbo_stream: [
+                turbo_stream.prepend("blog_posts", partial: "blog_post", locals: { blog_post: @blog_post }),
+                turbo_stream.remove("create-new-blog-post"),
+                turbo_stream.before("blog_posts", partial: "blog_posts_header")
+              ]
+          end
       else
         format.html { render :new, status: :unprocessable_entity }
       end
