@@ -1,4 +1,4 @@
-<div id="<%= dom_id blog_post %>" class="flex justify-between items-center" >
+<div id="<%= dom_id blog_post %>" >
   <%= turbo_frame_tag dom_id(blog_post) do %>
     <p class="my-5">
       <strong class="block font-medium mb-1">Author:</strong>
@@ -9,8 +9,9 @@
       <%= blog_post.content %>
     </p>
     <%= link_to "Edit", edit_blog_post_path(blog_post), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <div class="inline-block ml-2">
+      <%= button_to "Delete", blog_post_path(blog_post), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    </div>
+    <hr class="mt-6">
   <% end %>
-  <div class="inline-block ml-2">
-    <%= button_to "Delete", blog_post_path(blog_post), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
-  </div>
 </div>
