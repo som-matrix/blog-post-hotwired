@@ -27,11 +27,11 @@ class BlogPostsController < ApplicationController
       if @blog_post.save
           format.turbo_stream do
               render turbo_stream: [
-                turbo_stream.prepend("blog_posts", partial: "blog_post", locals: { blog_post: @blog_post }),
-                turbo_stream.remove("create-new-blog-post"),
-                turbo_stream.before("blog_posts", partial: "blog_posts_header")
+                turbo_stream.prepend("blog_posts", partial: "blog_post", locals: { blog_post: @blog_post })
               ]
           end
+          # Fall back for browser with javascript disabled
+          format.html { redirect_to blog_posts_path, notice: "Blog post was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -55,6 +55,8 @@ class BlogPostsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@blog_post) }
+      # Fall back for browser with javascript disabled
+      format.html { redirect_to blog_posts_path, notice: "Blog post was successfully destroyed." }
     end
   end
 
