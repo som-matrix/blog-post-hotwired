@@ -8,9 +8,14 @@ export default class extends Controller {
     "authorLimitExceeded",
     "authorSpecialChar",
     "contentBlank",
+    "formContainer",
   ];
+
   connect() {
     console.log("connected...");
+    this.formContainerTarget.addEventListener("submit", (e) => {
+      document.getElementById("create-new-blog-post").src = "/blog_posts";
+    });
   }
 
   handleChange() {
